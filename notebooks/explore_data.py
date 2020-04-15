@@ -45,9 +45,9 @@ def main():
     print(df.dtypes)
 
     # Extract Year, Month and Date and place in separate columns
-    df['year'] = DatetimeIndex(df.date).year
-    df['month'] = DatetimeIndex(df.date).month_name()
-    df['day'] = DatetimeIndex(df.date).day
+    df['year'] = DatetimeIndex(df.date, yearfirst=True).year
+    df['month'] = DatetimeIndex(df.date, yearfirst=True).month_name()
+    df['day'] = DatetimeIndex(df.date, yearfirst=True).day
 
     # States and Counties
     states = df.state.unique()
