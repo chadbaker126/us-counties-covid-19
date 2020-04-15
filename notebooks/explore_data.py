@@ -12,18 +12,8 @@ import os
 import datetime
 from pandas import read_csv, DatetimeIndex
 from numpy import nan, inf
-
-
-def convert_zip_codes(zips):
-    z_str = [str(i) for i in zips]
-    z_flt = zips.tolist()
-    zip_code = []
-    for i, j in zip(z_str, z_flt):
-        if len(str(i)) == 7:
-            zip_code.append(str(j)[0:5])
-        if len(str(i)) == 6:
-            zip_code.append(str(j * 10)[0:5])
-    return zip_code
+from plotly.graph_objects import Figure, Scatter
+from plotly.io import renderers
 
 
 def main():
@@ -43,24 +33,33 @@ def main():
     ]
     
     print(df.dtypes)
+    print(f'Number of total cases:  {df.cases.sum()}')
+    print(f'Number of total deaths:  {df.deaths.sum()}')
 
     # Extract Year, Month and Date and place in separate columns
     df['year'] = DatetimeIndex(df.date, yearfirst=True).year
     df['month'] = DatetimeIndex(df.date, yearfirst=True).month_name()
-    df['day'] = DatetimeIndex(df.date, yearfirst=True).day
 
     # States and Counties
     states = df.state.unique()
     counties = df.county.unique()
-
-    # Print Data
-    print(df[:5])
-    print(df.describe())
-    print(states)
-    print(counties)
-
-    df_ca = df[df.state == 'California'].reset_index()
-    print(df_ca)
+    
+    # Sum of Grouped Dats
+    grp_dates = df.groupby(['date', 'state'])['cases', 'deaths'].sum()
+    print(grp_dates.sum())
+    
+    # Plot Scatter plot of Cases vs Deaths
+    renderers.default='browser'
+    
+    fig = Figure(
+        data=Scatter(
+            x=df.cases,
+            y=df.deaths,
+            mode='markers'
+        )
+    )
+    
+    fig.show()
 
     return
 
