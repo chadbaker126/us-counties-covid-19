@@ -46,20 +46,7 @@ def main():
     
     # Sum of Grouped Dats
     grp_dates = df.groupby(['date', 'state'])['cases', 'deaths'].sum()
-    print(grp_dates.sum())
-    
-    # Plot Scatter plot of Cases vs Deaths
-    renderers.default='browser'
-    
-    fig = Figure(
-        data=Scatter(
-            x=df.cases,
-            y=df.deaths,
-            mode='markers'
-        )
-    )
-    
-    fig.show()
+    print(grp_dates)
 
     return
 
