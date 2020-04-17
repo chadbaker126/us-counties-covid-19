@@ -31,7 +31,7 @@ def main():
         
     print(f'Processing: {filename}')
     
-    
+    process_data(filename)
     
     return
 
